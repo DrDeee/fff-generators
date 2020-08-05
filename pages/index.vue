@@ -59,7 +59,16 @@
             <b-input />
           </b-field>
           <b-field label="Route">
-            <b-input type="textarea" />
+            <b-upload drag-drop accept="image/*">
+              <section class="section">
+                <div class="content has-text-centered">
+                  <p>
+                    <b-icon icon="upload" size="is-large" />
+                  </p>
+                  <p>Lade hier ein Bild deiner Demoroute hoch</p>
+                </div>
+              </section>
+            </b-upload>
           </b-field>
         </div>
       </b-step-item>
