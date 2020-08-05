@@ -6,22 +6,20 @@
           <b-field label="Name">
             <b-input />
           </b-field>
-          <div class="box">
-            <b-field label="Straße & Hausnummer" expanded>
+          <b-field label="Straße & Hausnummer" expanded>
+            <b-input />
+          </b-field>
+          <b-field label="Adresszusatz" expanded>
+            <b-input />
+          </b-field>
+          <b-field horizontal expanded custom-class="is-hidden">
+            <b-field label="Plz." expanded>
               <b-input />
             </b-field>
-            <b-field label="Adresszusatz" expanded>
+            <b-field label="Ort" expanded>
               <b-input />
             </b-field>
-            <b-field grouped>
-              <b-field label="Plz.">
-                <b-input expanded />
-              </b-field>
-              <b-field label="Ort" expanded>
-                <b-input />
-              </b-field>
-            </b-field>
-          </div>
+          </b-field>
         </section>
       </b-step-item>
       <b-step-item step="2" label="Demoleitung/Veranstalter*in">
@@ -31,22 +29,20 @@
         <b-field label="Telefonnummer/Faxnummer">
           <b-input />
         </b-field>
-        <div class="box">
-          <b-field label="Straße & Hausnummer" expanded>
+        <b-field label="Straße & Hausnummer" expanded>
+          <b-input />
+        </b-field>
+        <b-field label="Adresszusatz" expanded>
+          <b-input />
+        </b-field>
+        <b-field horizontal expanded custom-class="is-hidden">
+          <b-field label="Plz." expanded>
             <b-input />
           </b-field>
-          <b-field label="Adresszusatz" expanded>
+          <b-field label="Ort" expanded>
             <b-input />
           </b-field>
-          <b-field grouped>
-            <b-field label="Plz.">
-              <b-input expanded />
-            </b-field>
-            <b-field label="Ort" expanded>
-              <b-input />
-            </b-field>
-          </b-field>
-        </div>
+        </b-field>
       </b-step-item>
       <b-step-item step="3" label="Zeitlicher Ablauf">
         <b-field label="Tag der Veranstaltung">
