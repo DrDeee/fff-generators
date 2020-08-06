@@ -127,13 +127,17 @@ export default class IndexView extends Vue {
 
   createPDF() {
     const demonstrationDate = moment(this.date).format('DD.MM.yyyy')
-    const docDefinition = {
+    // yes this is shit, but TS hates me.
+    const docDefinition: any = {
       content: [
-        `Sehr geehrte Mitarbeiter*innen der Versammlungsbehörde,
+        {
+          text: `Sehr geehrte Mitarbeiter*innen der Versammlungsbehörde,
 
 Wir wollen für den ${demonstrationDate} eine Demo anmelden.
 
 Die benötigten Informationen für die Anmeldung der Demonstration und Kundgebung am ${demonstrationDate}:`,
+          margin: [0, 0, 0, 10],
+        },
         {
           table: {
             body: [
