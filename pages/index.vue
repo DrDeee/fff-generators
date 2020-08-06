@@ -69,6 +69,9 @@
         <b-field label="Voraussichtlicher Start">
           <b-timepicker> </b-timepicker>
         </b-field>
+        <b-field label="Voraussichtlicher Start">
+          <b-timepicker> </b-timepicker>
+        </b-field>
         <b-field label="Voraussichtliches Ende">
           <b-timepicker> </b-timepicker>
         </b-field>
@@ -102,16 +105,16 @@
       </b-step-item>
       <b-step-item step="4" label="Details">
         <b-field label="Voraussichtliche Teilnehmer*innen">
-          <b-input type="number" />
+          <b-input v-model="voraussichtlicheTeilnehmer" type="number" />
         </b-field>
         <b-field label="Anzahl Ordner*innen">
-          <b-input type="number" />
+          <b-input v-model="anzahlOrdner" type="number" />
         </b-field>
         <b-field
           label="Vorgesehene Hilfsmittel (Lautsprecher, Transparente,
           etc.)"
         >
-          <b-input type="textarea" />
+          <b-input v-model="vorgeseheneHilfsmittel" type="textarea" />
         </b-field>
       </b-step-item>
     </b-steps>
@@ -149,6 +152,12 @@ export default class IndexView extends Vue {
     ort: '',
     nummer: '',
   }
+
+  anzahlOrdner = ''
+
+  voraussichtlicheTeilnehmer = ''
+
+  vorgeseheneHilfsmittel = ''
 
   veranstalterIstVersammlungsleitung = true
   get versammlungsLeitung() {
@@ -201,6 +210,12 @@ Die benötigten Informationen für die Anmeldung der Demonstration und Kundgebun
                 'Telefonnummer der Versammlungsleitung',
                 this.versammlungsLeitung.nummer,
               ],
+              [
+                'Voraussichtliche Teilnehmer*innenanzahl',
+                this.voraussichtlicheTeilnehmer,
+              ],
+              ['Anzahl Ordner*innen', this.anzahlOrdner],
+              ['Vorgesehene Hilfsmittel', this.vorgeseheneHilfsmittel],
             ],
           },
         },
