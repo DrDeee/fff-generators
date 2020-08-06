@@ -92,7 +92,9 @@
       </b-step-item>
       <b-step-item step="4" label="Ablauf">
         <b-field label="Art und Gegenstand der Versammlung">
-          <b-input />
+          <b-input
+            value="Fridays For Future Laufdemo für mehr Klimagerechtigkeit"
+          />
         </b-field>
         <b-field label="Ablauf der Versammlung">
           <b-input type="textarea" />
