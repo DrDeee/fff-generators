@@ -4,44 +4,62 @@
       <b-step-item step="1" label="Veranstalter*in">
         <section class="section">
           <b-field label="Name">
-            <b-input v-model="veranstalterName" />
+            <b-input v-model="veranstalter.name" />
           </b-field>
           <b-field label="Straße & Hausnummer" expanded>
-            <b-input v-model="veranstalterStreet" />
+            <b-input v-model="veranstalter.straße" />
           </b-field>
           <b-field label="Adresszusatz" expanded>
-            <b-input v-model="veranstalterAdressZusatz" />
+            <b-input v-model="veranstalter.adresszusatz" />
           </b-field>
           <b-field horizontal expanded custom-class="is-hidden">
             <b-field label="Postleitzahl" expanded>
-              <b-input v-model="veranstalterPLZ" />
+              <b-input v-model="veranstalter.PLZ" />
             </b-field>
             <b-field label="Ort" expanded>
-              <b-input v-model="veranstalterOrt" />
+              <b-input v-model="veranstalter.ort" />
             </b-field>
           </b-field>
         </section>
       </b-step-item>
       <b-step-item step="2" label="Versammlungsleitung">
+        <b-checkbox v-model="veranstalterIstVersammlungsleitung">
+          Veranstalter*in als Versammlungsleitung übernehmen
+        </b-checkbox>
         <b-field label="Name">
-          <b-input v-model="versammlungsLeitungName" />
-        </b-field>
-        <b-field label="Telefonnummer/Faxnummer">
-          <b-input v-model="versammlungsLeitungNummer" />
+          <b-input
+            v-model="versammlungsLeitung.name"
+            :disabled="veranstalterIstVersammlungsleitung"
+          />
         </b-field>
         <b-field label="Straße & Hausnummer" expanded>
-          <b-input v-model="versammlungsLeitungStraße" />
+          <b-input
+            v-model="versammlungsLeitung.straße"
+            :disabled="veranstalterIstVersammlungsleitung"
+          />
         </b-field>
         <b-field label="Adresszusatz" expanded>
-          <b-input v-model="versammlungsLeitungAdresszusatz" />
+          <b-input
+            v-model="versammlungsLeitung.adresszusatz"
+            :disabled="veranstalterIstVersammlungsleitung"
+          />
         </b-field>
         <b-field horizontal expanded custom-class="is-hidden">
           <b-field label="Postleitzahl" expanded>
-            <b-input v-model="versammlungsLeitungPLZ" />
+            <b-input
+              v-model="versammlungsLeitung.PLZ"
+              :disabled="veranstalterIstVersammlungsleitung"
+            />
           </b-field>
           <b-field label="Ort" expanded>
-            <b-input v-model="versammlungsLeitungOrt" />
+            <b-input
+              v-model="versammlungsLeitung.ort"
+              :disabled="veranstalterIstVersammlungsleitung"
+            />
           </b-field>
+        </b-field>
+        <b-field label="Telefonnummer/Faxnummer">
+          <b-input v-model="versammlungsLeitung.nummer" />
         </b-field>
       </b-step-item>
       <b-step-item step="3" label="Zeitlicher Ablauf">
@@ -112,18 +130,30 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs
 @Component
 export default class IndexView extends Vue {
   date = new Date()
-  veranstalterName = ''
-  veranstalterAdressZusatz = ''
-  veranstalterStreet = ''
-  veranstalterPLZ = ''
-  veranstalterOrt = ''
 
-  versammlungsLeitungName = ''
-  versammlungsLeitungNummer = ''
-  versammlungsLeitungAdresszusatz = ''
-  versammlungsLeitungStraße = ''
-  versammlungsLeitungPLZ = ''
-  versammlungsLeitungOrt = ''
+  veranstalter = {
+    name: '',
+    adresszusatz: '',
+    straße: '',
+    PLZ: '',
+    ort: '',
+  }
+
+  versammlungsLeitungValue = {
+    name: '',
+    adresszusatz: '',
+    straße: '',
+    PLZ: '',
+    ort: '',
+    nummer: '',
+  }
+
+  veranstalterIstVersammlungsleitung = true
+  get versammlungsLeitung() {
+    return this.veranstalterIstVersammlungsleitung
+      ? { ...this.veranstalter, nummer: this.versammlungsLeitungValue.nummer }
+      : this.versammlungsLeitungValue
+  }
 
   createPDF() {
     const demonstrationDate = moment(this.date).format('DD.MM.yyyy')
@@ -141,33 +171,33 @@ Die benötigten Informationen für die Anmeldung der Demonstration und Kundgebun
         {
           table: {
             body: [
-              ['Name des*r Veranstalter*in', this.veranstalterName],
+              ['Name des*r Veranstalter*in', this.veranstalter.name],
               [
                 'Anschrift des*r Veranstalter*in',
-                (this.veranstalterAdressZusatz
-                  ? this.veranstalterAdressZusatz + '\n'
+                (this.veranstalter.adresszusatz
+                  ? this.veranstalter.adresszusatz + '\n'
                   : '') +
-                  this.veranstalterStreet +
+                  this.veranstalter.straße +
                   '\n' +
-                  this.veranstalterPLZ +
+                  this.veranstalter.PLZ +
                   ' ' +
-                  this.veranstalterOrt,
+                  this.veranstalter.ort,
               ],
-              ['Name der Versammlungsleitung', this.versammlungsLeitungName],
+              ['Name der Versammlungsleitung', this.versammlungsLeitung.name],
               [
                 'Anschrift der Versammlungsleitung',
-                (this.versammlungsLeitungAdresszusatz
-                  ? this.versammlungsLeitungAdresszusatz + '\n'
+                (this.versammlungsLeitung.adresszusatz
+                  ? this.versammlungsLeitung.adresszusatz + '\n'
                   : '') +
-                  this.versammlungsLeitungStraße +
+                  this.versammlungsLeitung.straße +
                   '\n' +
-                  this.veranstalterPLZ +
+                  this.veranstalter.PLZ +
                   ' ' +
-                  this.versammlungsLeitungOrt,
+                  this.versammlungsLeitung.ort,
               ],
               [
                 'Telefonnummer der Versammlungsleitung',
-                this.versammlungsLeitungNummer,
+                this.versammlungsLeitung.nummer,
               ],
             ],
           },
@@ -177,7 +207,7 @@ Um Unklarheiten zu klären kommen wir auch gerne vorbei.
 
 Mit freundlichen Grüßen,
 
-${this.veranstalterName}`,
+${this.veranstalter.name}`,
       ],
     }
     pdfMake.createPdf(docDefinition).download('demo_anmeldung.pdf')
