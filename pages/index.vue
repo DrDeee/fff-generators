@@ -3,7 +3,7 @@
     <b-steps>
       <b-step-item step="1" label="Veranstalter*in">
         <section class="section">
-          <b-field label="Name">
+          <b-field label="Vor- und Nachname">
             <b-input v-model="veranstalter.name" />
           </b-field>
           <b-field label="Straße & Hausnummer" expanded>
@@ -26,7 +26,7 @@
         <b-checkbox v-model="veranstalterIstVersammlungsleitung">
           Veranstalter*in als Versammlungsleitung übernehmen
         </b-checkbox>
-        <b-field label="Name">
+        <b-field label="Vor- und Nachname">
           <b-input
             v-model="versammlungsLeitung.name"
             :disabled="veranstalterIstVersammlungsleitung"
