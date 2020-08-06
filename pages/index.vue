@@ -131,7 +131,7 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs
 
 @Component
 export default class IndexView extends Vue {
-  date = new Date()
+  date = new Date('2020-09-25')
 
   veranstalter = {
     name: '',
