@@ -105,10 +105,18 @@
       </b-step-item>
       <b-step-item step="4" label="Details">
         <b-field label="Voraussichtliche Teilnehmer*innen">
-          <b-input v-model="voraussichtlicheTeilnehmer" type="number" />
+          <b-input
+            v-model="voraussichtlicheTeilnehmer"
+            type="number"
+            @input="onTeilnehmerInput"
+          />
         </b-field>
         <b-field label="Anzahl Ordner*innen">
-          <b-input v-model="anzahlOrdner" type="number" />
+          <b-input
+            v-model="anzahlOrdner"
+            type="number"
+            @input="onOrdnerInput"
+          />
         </b-field>
         <b-field
           label="Vorgesehene Hilfsmittel (Lautsprecher, Transparente,
@@ -228,6 +236,19 @@ ${this.veranstalter.name}`,
       ],
     }
     pdfMake.createPdf(docDefinition).download('demo_anmeldung.pdf')
+  }
+
+  manuallySetOrdner = false
+
+  onOrdnerInput() {
+    this.manuallySetOrdner = true
+  }
+
+  onTeilnehmerInput() {
+    const teilnehmer = Number(this.voraussichtlicheTeilnehmer)
+    if (teilnehmer && !this.manuallySetOrdner) {
+      this.anzahlOrdner = Math.ceil(teilnehmer / 30).toString()
+    }
   }
 }
 </script>
