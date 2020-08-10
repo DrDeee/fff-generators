@@ -111,7 +111,16 @@
             @input="onTeilnehmerInput"
           />
         </b-field>
-        <b-field label="Anzahl Ordner*innen">
+        <b-field>
+          <template slot="label" class="has-text-weight-bold">
+            <b-icon
+              icon="information"
+              type="is-info"
+              cutom-size="mdi-18px"
+              title="Meist ca. 1 Person pro 30 Teilnehmenden"
+            />
+            <span class="has-text-weight-bold"> Anzahl Ordner*innen: </span>
+          </template>
           <b-input
             v-model="anzahlOrdner"
             type="number"
