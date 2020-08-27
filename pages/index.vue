@@ -103,7 +103,7 @@
           <b-input type="textarea" />
         </b-field>
       </b-step-item>
-      <b-step-item step="4" label="Details">
+      <b-step-item step="5" label="Details">
         <b-field label="Voraussichtliche Teilnehmer*innen">
           <b-input
             v-model="voraussichtlicheTeilnehmer"
