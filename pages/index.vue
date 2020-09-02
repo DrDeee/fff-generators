@@ -67,17 +67,19 @@
           <b-datepicker v-model="date"> </b-datepicker>
         </b-field>
         <b-field label="Voraussichtlicher Start">
-          <b-timepicker :increment-minutes="5"> </b-timepicker>
+          <b-timepicker v-model="startzeit" :increment-minutes="5">
+          </b-timepicker>
         </b-field>
         <b-field label="Voraussichtlicher Start">
           <b-timepicker :increment-minutes="5"> </b-timepicker>
         </b-field>
         <b-field label="Voraussichtliches Ende">
-          <b-timepicker :increment-minutes="5"> </b-timepicker>
+          <b-timepicker v-model="endzeit" :increment-minutes="5">
+          </b-timepicker>
         </b-field>
         <div class="box">
           <b-field label="Startpunkt">
-            <b-input />
+            <b-input v-model="startpunkt" />
           </b-field>
           <b-field label="Route">
             <b-upload drag-drop accept="image/*">
@@ -95,12 +97,10 @@
       </b-step-item>
       <b-step-item step="4" label="Ablauf">
         <b-field label="Art und Gegenstand der Versammlung">
-          <b-input
-            value="Fridays For Future Laufdemo für mehr Klimagerechtigkeit"
-          />
+          <b-input v-model="versammlungsthema" />
         </b-field>
         <b-field label="Ablauf der Versammlung">
-          <b-input type="textarea" />
+          <b-input v-model="ablauf" type="textarea" />
         </b-field>
       </b-step-item>
       <b-step-item step="5" label="Details">
@@ -183,8 +183,17 @@ export default class IndexView extends Vue {
       : this.versammlungsLeitungValue
   }
 
+  startzeit = new Date(0)
+  endzeit = new Date(0)
+  startpunkt = ''
+
+  versammlungsthema = 'Fridays For Future Laufdemo für mehr Klimagerechtigkeit'
+  ablauf = ''
+
   createPDF() {
     const demonstrationDate = moment(this.date).format('DD.MM.yyyy')
+    const startzeitString = moment(this.startzeit).format('HH:mm')
+    const endzeitString = moment(this.endzeit).format('HH:mm')
     // yes this is shit, but TS hates me.
     const docDefinition: any = {
       content: [
@@ -227,6 +236,11 @@ Die benötigten Informationen für die Anmeldung der Demonstration und Kundgebun
                 'Telefonnummer der Versammlungsleitung',
                 this.versammlungsLeitung.nummer,
               ],
+              ['Start der Versammlung', startzeitString],
+              ['Ende der Versammlung', endzeitString],
+              ['Startpunkt', this.startpunkt],
+              ['Art und Gegenstand der Versammlung', this.versammlungsthema],
+              ['Ablauf der Versammlung', this.ablauf],
               [
                 'Voraussichtliche Teilnehmer*innenanzahl',
                 this.voraussichtlicheTeilnehmer,
