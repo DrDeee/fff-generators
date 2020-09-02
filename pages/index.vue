@@ -67,13 +67,13 @@
           <b-datepicker v-model="date"> </b-datepicker>
         </b-field>
         <b-field label="Voraussichtlicher Start">
-          <b-timepicker> </b-timepicker>
+          <b-timepicker :increment-minutes="5"> </b-timepicker>
         </b-field>
         <b-field label="Voraussichtlicher Start">
-          <b-timepicker> </b-timepicker>
+          <b-timepicker :increment-minutes="5"> </b-timepicker>
         </b-field>
         <b-field label="Voraussichtliches Ende">
-          <b-timepicker> </b-timepicker>
+          <b-timepicker :increment-minutes="5"> </b-timepicker>
         </b-field>
         <div class="box">
           <b-field label="Startpunkt">
@@ -103,7 +103,7 @@
           <b-input type="textarea" />
         </b-field>
       </b-step-item>
-      <b-step-item step="4" label="Details">
+      <b-step-item step="5" label="Details">
         <b-field label="Voraussichtliche Teilnehmer*innen">
           <b-input
             v-model="voraussichtlicheTeilnehmer"
