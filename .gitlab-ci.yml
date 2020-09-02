@@ -1,0 +1,12 @@
+build:
+  stage: build
+  script: npm i && npm run generate
+  artifacts:
+    paths:
+      - dist/
+
+deploy:
+  stage: deploy
+  tags: deploy_generator
+  script: cp -rf dist/ /var/www/anmeldung.websiteag.lol
+  
