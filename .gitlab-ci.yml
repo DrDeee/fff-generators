@@ -7,6 +7,8 @@ build:
 
 deploy:
   stage: deploy
+  only:
+    - master
   tags:
     - deploy_generator
   script: cp -rf dist/* /var/www/anmeldung.websiteag.lol/
