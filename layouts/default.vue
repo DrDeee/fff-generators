@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!--
     <nav
       class="navbar header has-shadow is-primary"
       role="navigation"
@@ -11,6 +12,7 @@
         </a>
       </div>
     </nav>
+    -->
 
     <div class="container column">
       <nuxt />
