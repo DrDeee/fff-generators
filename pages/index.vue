@@ -67,40 +67,36 @@
           <b-datepicker v-model="date"> </b-datepicker>
         </b-field>
         <b-field label="Voraussichtlicher Start">
-          <b-timepicker :increment-minutes="5"> </b-timepicker>
+          <b-timepicker v-model="startzeit" :increment-minutes="5">
+          </b-timepicker>
         </b-field>
-        <b-field label="Voraussichtlicher Start">
-          <b-timepicker :increment-minutes="5"> </b-timepicker>
+        <b-field
+          label="Voraussichtlicher Start des Demozugs (wenn es keinen gibt, dann leer lassen)"
+        >
+          <b-timepicker v-model="startzeitDemozug" :increment-minutes="5">
+          </b-timepicker>
         </b-field>
         <b-field label="Voraussichtliches Ende">
-          <b-timepicker :increment-minutes="5"> </b-timepicker>
+          <b-timepicker v-model="endzeit" :increment-minutes="5">
+          </b-timepicker>
         </b-field>
         <div class="box">
           <b-field label="Startpunkt">
-            <b-input />
+            <b-input v-model="startpunkt" />
           </b-field>
-          <b-field label="Route">
-            <b-upload drag-drop accept="image/*">
-              <section class="section">
-                <div class="content has-text-centered">
-                  <p>
-                    <b-icon icon="upload" size="is-large" />
-                  </p>
-                  <p>Lade hier ein Bild deiner Demoroute hoch</p>
-                </div>
-              </section>
-            </b-upload>
+          <b-field
+            label="Routenverlauf (am besten alle Straßennamen nacheinander auflisten)"
+          >
+            <b-input v-model="route" type="textarea" />
           </b-field>
         </div>
       </b-step-item>
       <b-step-item step="4" label="Ablauf">
         <b-field label="Art und Gegenstand der Versammlung">
-          <b-input
-            value="Fridays For Future Laufdemo für mehr Klimagerechtigkeit"
-          />
+          <b-input v-model="versammlungsthema" />
         </b-field>
         <b-field label="Ablauf der Versammlung">
-          <b-input type="textarea" />
+          <b-input v-model="ablauf" type="textarea" />
         </b-field>
       </b-step-item>
       <b-step-item step="5" label="Details">
@@ -135,9 +131,7 @@
         </b-field>
       </b-step-item>
     </b-steps>
-    <b-button @click="createPDF">
-      Download
-    </b-button>
+    <b-button @click="createPDF">Download</b-button>
   </form>
 </template>
 
@@ -183,8 +177,27 @@ export default class IndexView extends Vue {
       : this.versammlungsLeitungValue
   }
 
+  startzeit = null
+  startzeitDemozug = null
+  endzeit = null
+  startpunkt = ''
+  route = ''
+
+  versammlungsthema = 'Fridays For Future Laufdemo für mehr Klimagerechtigkeit'
+  ablauf = ''
+
   createPDF() {
     const demonstrationDate = moment(this.date).format('DD.MM.yyyy')
+    const startzeitString =
+      this.startzeit !== null
+        ? moment(this.startzeit).format('HH:mm') + ' Uhr'
+        : ''
+    const startzeitDemozugString =
+      this.startzeitDemozug !== null
+        ? moment(this.startzeitDemozug).format('HH:mm') + ' Uhr'
+        : ''
+    const endzeitString =
+      this.endzeit !== null ? moment(this.endzeit).format('HH:mm') + ' Uhr' : ''
     // yes this is shit, but TS hates me.
     const docDefinition: any = {
       content: [
@@ -227,6 +240,13 @@ Die benötigten Informationen für die Anmeldung der Demonstration und Kundgebun
                 'Telefonnummer der Versammlungsleitung',
                 this.versammlungsLeitung.nummer,
               ],
+              ['Start der Versammlung', startzeitString],
+              ['Start des Demozugs', startzeitDemozugString],
+              ['Ende der Versammlung', endzeitString],
+              ['Startpunkt', this.startpunkt],
+              ['Demoroute', this.route],
+              ['Art und Gegenstand der Versammlung', this.versammlungsthema],
+              ['Ablauf der Versammlung', this.ablauf],
               [
                 'Voraussichtliche Teilnehmer*innenanzahl',
                 this.voraussichtlicheTeilnehmer,
