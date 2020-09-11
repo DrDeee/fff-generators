@@ -204,7 +204,7 @@ export default class IndexView extends Vue {
         {
           text: `Sehr geehrte Mitarbeiter*innen der Versammlungsbehörde,
 
-Wir wollen für den ${demonstrationDate} eine Demo anmelden.
+Wir würden für den ${demonstrationDate} gerne eine Demo anmelden.
 
 Die benötigten Informationen für die Anmeldung der Demonstration und Kundgebung am ${demonstrationDate}:`,
           margin: [0, 0, 0, 10],
@@ -232,7 +232,7 @@ Die benötigten Informationen für die Anmeldung der Demonstration und Kundgebun
                   : '') +
                   this.versammlungsLeitung.straße +
                   '\n' +
-                  this.veranstalter.PLZ +
+                  this.versammlungsLeitung.PLZ +
                   ' ' +
                   this.versammlungsLeitung.ort,
               ],
@@ -257,7 +257,7 @@ Die benötigten Informationen für die Anmeldung der Demonstration und Kundgebun
           },
         },
         `
-Um Unklarheiten zu klären kommen wir auch gerne vorbei.
+Um Unklarheiten zu klären, kommen wir auch gerne vorbei.
 
 Mit freundlichen Grüßen,
 
