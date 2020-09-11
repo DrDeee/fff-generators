@@ -177,9 +177,9 @@ export default class IndexView extends Vue {
       : this.versammlungsLeitungValue
   }
 
-  startzeit = new Date(0)
-  startzeitDemozug = new Date(0)
-  endzeit = new Date(0)
+  startzeit = null
+  startzeitDemozug = null
+  endzeit = null
   startpunkt = ''
   route = ''
 
@@ -188,9 +188,16 @@ export default class IndexView extends Vue {
 
   createPDF() {
     const demonstrationDate = moment(this.date).format('DD.MM.yyyy')
-    const startzeitString = moment(this.startzeit).format('HH:mm')
-    const startzeitDemozugString = moment(this.startzeitDemozug).format('HH:mm')
-    const endzeitString = moment(this.endzeit).format('HH:mm')
+    const startzeitString =
+      this.startzeit !== null
+        ? moment(this.startzeit).format('HH:mm') + ' Uhr'
+        : ''
+    const startzeitDemozugString =
+      this.startzeitDemozug !== null
+        ? moment(this.startzeitDemozug).format('HH:mm') + ' Uhr'
+        : ''
+    const endzeitString =
+      this.endzeit !== null ? moment(this.endzeit).format('HH:mm') + ' Uhr' : ''
     // yes this is shit, but TS hates me.
     const docDefinition: any = {
       content: [
