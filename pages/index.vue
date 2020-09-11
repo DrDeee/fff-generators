@@ -70,8 +70,11 @@
           <b-timepicker v-model="startzeit" :increment-minutes="5">
           </b-timepicker>
         </b-field>
-        <b-field label="Voraussichtlicher Start">
-          <b-timepicker :increment-minutes="5"> </b-timepicker>
+        <b-field
+          label="Voraussichtlicher Start des Demozugs (wenn es keinen gibt, dann leer lassen)"
+        >
+          <b-timepicker v-model="startzeitDemozug" :increment-minutes="5">
+          </b-timepicker>
         </b-field>
         <b-field label="Voraussichtliches Ende">
           <b-timepicker v-model="endzeit" :increment-minutes="5">
@@ -81,17 +84,10 @@
           <b-field label="Startpunkt">
             <b-input v-model="startpunkt" />
           </b-field>
-          <b-field label="Route">
-            <b-upload drag-drop accept="image/*">
-              <section class="section">
-                <div class="content has-text-centered">
-                  <p>
-                    <b-icon icon="upload" size="is-large" />
-                  </p>
-                  <p>Lade hier ein Bild deiner Demoroute hoch</p>
-                </div>
-              </section>
-            </b-upload>
+          <b-field
+            label="Routenverlauf (am besten alle Straßennamen nacheinander auflisten)"
+          >
+            <b-input v-model="route" type="textarea" />
           </b-field>
         </div>
       </b-step-item>
@@ -135,9 +131,7 @@
         </b-field>
       </b-step-item>
     </b-steps>
-    <b-button @click="createPDF">
-      Download
-    </b-button>
+    <b-button @click="createPDF">Download</b-button>
   </form>
 </template>
 
@@ -184,8 +178,10 @@ export default class IndexView extends Vue {
   }
 
   startzeit = new Date(0)
+  startzeitDemozug = new Date(0)
   endzeit = new Date(0)
   startpunkt = ''
+  route = ''
 
   versammlungsthema = 'Fridays For Future Laufdemo für mehr Klimagerechtigkeit'
   ablauf = ''
@@ -193,6 +189,7 @@ export default class IndexView extends Vue {
   createPDF() {
     const demonstrationDate = moment(this.date).format('DD.MM.yyyy')
     const startzeitString = moment(this.startzeit).format('HH:mm')
+    const startzeitDemozugString = moment(this.startzeitDemozug).format('HH:mm')
     const endzeitString = moment(this.endzeit).format('HH:mm')
     // yes this is shit, but TS hates me.
     const docDefinition: any = {
@@ -237,8 +234,10 @@ Die benötigten Informationen für die Anmeldung der Demonstration und Kundgebun
                 this.versammlungsLeitung.nummer,
               ],
               ['Start der Versammlung', startzeitString],
+              ['Start des Demozugs', startzeitDemozugString],
               ['Ende der Versammlung', endzeitString],
               ['Startpunkt', this.startpunkt],
+              ['Demoroute', this.route],
               ['Art und Gegenstand der Versammlung', this.versammlungsthema],
               ['Ablauf der Versammlung', this.ablauf],
               [
