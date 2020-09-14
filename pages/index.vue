@@ -23,9 +23,9 @@
         </section>
       </b-step-item>
       <b-step-item step="2" label="Versammlungsleitung">
-        <b-checkbox v-model="veranstalterIstVersammlungsleitung">
-          Veranstalter*in als Versammlungsleitung übernehmen
-        </b-checkbox>
+        <b-checkbox v-model="veranstalterIstVersammlungsleitung"
+          >Veranstalter*in als Versammlungsleitung übernehmen</b-checkbox
+        >
         <b-field label="Vor- und Nachname">
           <b-input
             v-model="versammlungsLeitung.name"
@@ -64,21 +64,24 @@
       </b-step-item>
       <b-step-item step="3" label="Zeitlicher Ablauf">
         <b-field label="Tag der Veranstaltung">
-          <b-datepicker v-model="date"> </b-datepicker>
+          <b-datepicker v-model="date"></b-datepicker>
         </b-field>
         <b-field label="Voraussichtlicher Start">
-          <b-timepicker v-model="startzeit" :increment-minutes="5">
-          </b-timepicker>
+          <b-timepicker
+            v-model="startzeit"
+            :increment-minutes="5"
+          ></b-timepicker>
         </b-field>
         <b-field
           label="Voraussichtlicher Start des Demozugs (wenn es keinen gibt, dann leer lassen)"
         >
-          <b-timepicker v-model="startzeitDemozug" :increment-minutes="5">
-          </b-timepicker>
+          <b-timepicker
+            v-model="startzeitDemozug"
+            :increment-minutes="5"
+          ></b-timepicker>
         </b-field>
         <b-field label="Voraussichtliches Ende">
-          <b-timepicker v-model="endzeit" :increment-minutes="5">
-          </b-timepicker>
+          <b-timepicker v-model="endzeit" :increment-minutes="5"></b-timepicker>
         </b-field>
         <div class="box">
           <b-field label="Startpunkt">
@@ -108,14 +111,16 @@
           />
         </b-field>
         <b-field>
-          <template slot="label" class="has-text-weight-bold">
-            <b-icon
-              icon="information"
-              type="is-info"
-              cutom-size="mdi-18px"
-              title="Meist ca. 1 Person pro 30 Teilnehmenden"
-            />
-            <span class="has-text-weight-bold"> Anzahl Ordner*innen: </span>
+          <template slot="label">
+            <div style="display: flex">
+              <b-icon
+                icon="info-circle"
+                type="is-info"
+                custom-size="fa-lg"
+                title="Meist ca. 1 Person pro 30 Teilnehmenden"
+              />
+              <span class="has-text-weight-bold">Anzahl Ordner*innen:</span>
+            </div>
           </template>
           <b-input
             v-model="anzahlOrdner"

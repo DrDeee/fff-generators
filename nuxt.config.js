@@ -27,10 +27,6 @@ export default {
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
   },
   /*
-   ** Global CSS
-   */
-  css: [],
-  /*
    ** Plugins to load before mounting the App
    ** https://nuxtjs.org/guide/plugins
    */
@@ -54,6 +50,7 @@ export default {
   modules: [
     // Doc: https://buefy.github.io/#/documentation
     'nuxt-buefy',
+    'nuxt-fontawesome',
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     '@nuxtjs/pwa',
@@ -68,4 +65,17 @@ export default {
    ** See https://nuxtjs.org/api/configuration-build/
    */
   build: {},
+  buefy: {
+    materialDesignIcons: false,
+    defaultIconPack: 'fas',
+    defaultIconComponent: 'font-awesome-icon',
+  },
+  fontawesome: {
+    imports: [
+      {
+        set: '@fortawesome/free-solid-svg-icons',
+        icons: ['fas'],
+      },
+    ],
+  },
 }

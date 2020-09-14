@@ -22,6 +22,10 @@
     }
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free-solid": "^5.0.13",
+    "@fortawesome/fontawesome-svg-core": "^1.2.30",
+    "@fortawesome/free-solid-svg-icons": "^5.14.0",
+    "@fortawesome/vue-fontawesome": "^2.0.0",
     "@nuxt/typescript-runtime": "^1.0.0",
     "@nuxtjs/axios": "^5.12.2",
     "@nuxtjs/pwa": "^3.0.2",
@@ -29,6 +33,7 @@
     "moment": "^2.27.0",
     "nuxt": "^2.14.4",
     "nuxt-buefy": "^0.3.31",
+    "nuxt-fontawesome": "^0.4.0",
     "pdfmake": "^0.1.68"
   },
   "devDependencies": {
