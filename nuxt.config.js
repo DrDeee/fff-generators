@@ -78,4 +78,11 @@ export default {
       },
     ],
   },
+  render: {
+    csp: {
+      policies: {
+        'script-src': ['unsafe-eval'],
+      },
+    },
+  },
 }
