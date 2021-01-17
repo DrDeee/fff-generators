@@ -9,9 +9,9 @@ function whatsToHtml(msg) {
   if (!msg) return
 
   return msg
-    .replace(/(\s~\S[^*\n]*~\s)/g, '<del>$1</del>')
-    .replace(/(\s_\S[^*\n]*_\s)/g, '<em>$1</em>')
-    .replace(/(\s\*\S[^*\n]*\*\s)/g, '<strong>$1</strong>')
+    .replace(/(~\S[^~]*~)/g, '<del>$1</del>')
+    .replace(/(_\S[^_]*_)/g, '<em>$1</em>')
+    .replace(/(\*\S[^*]*\*)/g, '<strong>$1</strong>')
 }
 
 whatsToHtml('foo') // bypass prettier
