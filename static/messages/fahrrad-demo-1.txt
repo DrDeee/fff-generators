@@ -1,0 +1,4 @@
+Am *{date : Datum} um {time : Uhrzeit} am {text : Ort}* in {text : Ortsgruppe} findet unsere nächste *Fahrrad-Demo* statt! 💚🌎
+Diesmal fahren wir von {text} nach {text:Endpunkt} und wieder zurück. 🚴
+Damit wollen wir *für bessere Radwege im ganzen Landkreis* demonstrieren. 🛣️🚲
+*Wir freuen uns auf euch!* 📢🥳
