@@ -1,4 +1,6 @@
 export default {
+    target: process.env.TARGET || 'server',
+    ssr: process.env.SSR !== 'FALSE',
     /*
      ** Headers of the page
      ** See https://nuxtjs.org/api/configuration-head
