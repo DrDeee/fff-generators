@@ -135,6 +135,9 @@
           <b-input v-model="vorgeseheneHilfsmittel" type="textarea" />
         </b-field>
       </b-step-item>
+      <b-step-item step="6" label="Fertig">
+        <b-button @click="createPDF">Download</b-button>
+      </b-step-item>
     </b-steps>
     <b-button @click="createPDF">Download</b-button>
   </form>
@@ -144,11 +147,70 @@
 import { Vue, Component } from 'vue-property-decorator'
 import moment from 'moment'
 import pdfMake from 'pdfmake/build/pdfmake'
-import pdfFonts from 'pdfmake/build/vfs_fonts'
 import { DialogProgrammatic as Dialog } from 'buefy'
 
-pdfMake.vfs = pdfFonts.pdfMake.vfs
+pdfMake.fonts = {
+  jost: {
+    normal: 'https://drdeee.github.io/fonts/Jost-400-Book.ttf',
+    bold: 'https://drdeee.github.io/fonts/Jost-500-Medium.ttf',
+    italics: 'https://drdeee.github.io/fonts/Jost-400-BookItalic.ttf',
+    bolditalics: 'https://drdeee.github.io/fonts/Jost-500-MediumItalic.ttf',
+  },
+}
 
+pdfMake.tableLayouts = {
+  lightHorizontalLines: {
+    hLineWidth(i, node) {
+      if (i === 0 || i === node.table.body.length) {
+        return 0
+      }
+      return 1
+    },
+    vLineWidth() {
+      return 0
+    },
+    hLineColor() {
+      return '#aaa'
+    },
+    paddingRight() {
+      return 15
+    },
+    paddingTop() {
+      return 2
+    },
+    paddingBottom() {
+      return 2
+    },
+  },
+  signature: {
+    hLineWidth(i) {
+      if (i === 0) {
+        return 1
+      }
+      return 0
+    },
+    vLineWidth() {
+      return 0
+    },
+    hLineColor() {
+      return '#aaa'
+    },
+  },
+}
+
+function applyTabelStyles(table: any) {
+  const ret = []
+  for (let i = 0; i < table.length; i++) {
+    ret.push([
+      {
+        text: table[i][0],
+        bold: true,
+      },
+      table[i][1],
+    ])
+  }
+  return ret
+}
 @Component
 export default class IndexView extends Vue {
   date = new Date('2020-09-25')
@@ -204,20 +266,35 @@ export default class IndexView extends Vue {
         : ''
     const endzeitString =
       this.endzeit !== null ? moment(this.endzeit).format('HH:mm') + ' Uhr' : ''
+
     // yes this is shit, but TS hates me.
     const docDefinition: any = {
+      defaultStyle: {
+        font: 'jost',
+        fontSize: 12,
+      },
       content: [
         {
+          text:
+            'Anmeldung einer Versammlung unter freiem Himmel \n nach § 14 Versammlungsgesetz',
+          bold: true,
+          fontSize: 18,
+          alignment: 'center',
+          margin: [0, 0, 0, 20],
+        },
+        {
           text: `Sehr geehrte Mitarbeiter*innen der Versammlungsbehörde,
-
-Wir würden für den ${demonstrationDate} gerne eine Demo anmelden.
+Wir würden für den ${demonstrationDate} gerne eine Demonstration anmelden.
 
 Die benötigten Informationen für die Anmeldung der Demonstration und Kundgebung am ${demonstrationDate}:`,
           margin: [0, 0, 0, 10],
         },
         {
+          layout: 'lightHorizontalLines',
           table: {
-            body: [
+            headerRows: 0,
+            widths: ['40%', '*'],
+            body: applyTabelStyles([
               ['Name des*r Veranstalter*in', this.veranstalter.name],
               [
                 'Anschrift des*r Veranstalter*in',
@@ -259,15 +336,23 @@ Die benötigten Informationen für die Anmeldung der Demonstration und Kundgebun
               ],
               ['Anzahl Ordner*innen', this.anzahlOrdner],
               ['Vorgesehene Hilfsmittel', this.vorgeseheneHilfsmittel],
-            ],
+            ]),
           },
         },
         `
 Um Unklarheiten zu klären, kommen wir auch gerne vorbei.
-
 Mit freundlichen Grüßen,
 
-${this.veranstalter.name}`,
+`,
+        {
+          layout: 'signature',
+          alignment: 'center',
+          margin: [300, 0, 0, 0],
+          table: {
+            widths: [150],
+            body: [[this.veranstalter.name]],
+          },
+        },
       ],
     }
     pdfMake.createPdf(docDefinition).download('demo_anmeldung.pdf')
