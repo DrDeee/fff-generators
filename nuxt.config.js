@@ -68,4 +68,7 @@ export default {
             icons: ['fas'],
         }, ],
     },
+    router: {
+        base: process.env.BASE_ROUTE || '/'
+    }
 }
