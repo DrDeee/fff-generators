@@ -1,8 +1,6 @@
 <template>
-  <form class="form">
-    <b-steps size="6" mobile-mode="minimalist">
+    <b-steps>
       <b-step-item step="1" label="Veranstalter*in" clickable>
-        <section class="section">
           <b-field label="Vor- und Nachname">
             <b-input v-model="veranstalter.name" />
           </b-field>
@@ -20,7 +18,6 @@
               <b-input v-model="veranstalter.ort" />
             </b-field>
           </b-field>
-        </section>
       </b-step-item>
       <b-step-item step="2" label="Versammlungsleitung" clickable>
         <b-checkbox v-model="veranstalterIstVersammlungsleitung"
@@ -166,14 +163,12 @@
         <b-button :type="buttonStyle" @click="createPDF">Download</b-button>
       </b-step-item>
     </b-steps>
-  </form>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
 import moment from 'moment'
 import pdfMake from 'pdfmake/build/pdfmake'
-import { DialogProgrammatic as Dialog } from 'buefy'
 
 pdfMake.fonts = {
   jost: {
@@ -474,15 +469,6 @@ Mit freundlichen Grüßen,
     if (teilnehmer && !this.manuallySetOrdner) {
       this.anzahlOrdner = Math.ceil(teilnehmer / 30).toString()
     }
-  }
-
-  mounted() {
-    Dialog.alert({
-      title: 'Willkommen!',
-      message:
-        'Herzlich Willkommen bei unserem wundertollen Demoanmeldungsgenerator! ☺️<br/><br/><i>Was könnt ihr hier machen?</i><br/>Ihr könnt ganz einfach die für die Demoanmeldung nötigen Informationen hier eingeben und bekommt eine fertig formulierte Demoanmeldung generiert, die ihr gemütlich als PDF-Datei an euer Ordnungsamt schicken könnt!<br/>Achtung: Es kann sein, dass ihr je nach Situation bei euch vor Ort auch ein Hygienekonzept braucht, nutzt dafür gerne die Vorlagen der Corona Taskforce <a href="https://wiki.fridaysforfuture.is/index.php?title=Infektionsschutz#Infektionsschutzkonzepte" target="_blank">hier</a>.<br/><br/><i>Ihr bemerkt Fehler oder habt noch Fragen/Probleme?</i><br/>Dann wendet euch sehr gerne an den <a href="https://wa.me/4915678731731">Techsupport-Bot</a>!<br/><br/><i>Hinweis:</i> Dieser Generator ist offen für alle und steht zu eurer freien Verfügung, solange er nicht genutzt wird um menschenrechtsfeindliche oder faschistische Aktionen zu unterstützen.',
-      confirmText: 'Cool!',
-    })
   }
 }
 </script>
