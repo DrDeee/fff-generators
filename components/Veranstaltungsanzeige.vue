@@ -1,174 +1,177 @@
 <template>
-    <b-steps>
-      <b-step-item step="1" label="Veranstalter*in" clickable>
-          <b-field label="Vor- und Nachname">
-            <b-input v-model="veranstalter.name" />
-          </b-field>
-          <b-field label="Straße & Hausnummer" expanded>
-            <b-input v-model="veranstalter.straße" />
-          </b-field>
-          <b-field label="Adresszusatz" expanded>
-            <b-input v-model="veranstalter.adresszusatz" />
-          </b-field>
-          <b-field horizontal expanded custom-class="is-hidden">
-            <b-field label="Postleitzahl" expanded>
-              <b-input v-model="veranstalter.PLZ" />
-            </b-field>
-            <b-field label="Ort" expanded>
-              <b-input v-model="veranstalter.ort" />
-            </b-field>
-          </b-field>
-      </b-step-item>
-      <b-step-item step="2" label="Versammlungsleitung" clickable>
-        <b-checkbox v-model="veranstalterIstVersammlungsleitung"
-          >Veranstalter*in als Versammlungsleitung übernehmen</b-checkbox
-        >
-        <b-field label="Vor- und Nachname">
+  <b-steps>
+    <b-step-item step="1" label="Veranstalter*in" clickable>
+      <b-field label="Vor- und Nachname">
+        <b-input v-model="veranstalter.name" />
+      </b-field>
+      <b-field label="Straße & Hausnummer" expanded>
+        <b-input v-model="veranstalter.straße" />
+      </b-field>
+      <b-field label="Adresszusatz" expanded>
+        <b-input v-model="veranstalter.adresszusatz" />
+      </b-field>
+      <b-field horizontal expanded custom-class="is-hidden">
+        <b-field label="Postleitzahl" expanded>
+          <b-input v-model="veranstalter.PLZ" />
+        </b-field>
+        <b-field label="Ort" expanded>
+          <b-input v-model="veranstalter.ort" />
+        </b-field>
+      </b-field>
+    </b-step-item>
+    <b-step-item step="2" label="Versammlungsleitung" clickable>
+      <b-checkbox v-model="veranstalterIstVersammlungsleitung"
+        >Veranstalter*in als Versammlungsleitung übernehmen</b-checkbox
+      >
+      <b-field label="Vor- und Nachname">
+        <b-input
+          v-model="versammlungsLeitung.name"
+          :disabled="veranstalterIstVersammlungsleitung"
+        />
+      </b-field>
+      <b-field label="Straße & Hausnummer" expanded>
+        <b-input
+          v-model="versammlungsLeitung.straße"
+          :disabled="veranstalterIstVersammlungsleitung"
+        />
+      </b-field>
+      <b-field label="Adresszusatz" expanded>
+        <b-input
+          v-model="versammlungsLeitung.adresszusatz"
+          :disabled="veranstalterIstVersammlungsleitung"
+        />
+      </b-field>
+      <b-field horizontal expanded custom-class="is-hidden">
+        <b-field label="Postleitzahl" expanded>
           <b-input
-            v-model="versammlungsLeitung.name"
+            v-model="versammlungsLeitung.PLZ"
             :disabled="veranstalterIstVersammlungsleitung"
           />
         </b-field>
-        <b-field label="Straße & Hausnummer" expanded>
+        <b-field label="Ort" expanded>
           <b-input
-            v-model="versammlungsLeitung.straße"
+            v-model="versammlungsLeitung.ort"
             :disabled="veranstalterIstVersammlungsleitung"
           />
         </b-field>
-        <b-field label="Adresszusatz" expanded>
-          <b-input
-            v-model="versammlungsLeitung.adresszusatz"
-            :disabled="veranstalterIstVersammlungsleitung"
-          />
-        </b-field>
-        <b-field horizontal expanded custom-class="is-hidden">
-          <b-field label="Postleitzahl" expanded>
-            <b-input
-              v-model="versammlungsLeitung.PLZ"
-              :disabled="veranstalterIstVersammlungsleitung"
-            />
-          </b-field>
-          <b-field label="Ort" expanded>
-            <b-input
-              v-model="versammlungsLeitung.ort"
-              :disabled="veranstalterIstVersammlungsleitung"
-            />
-          </b-field>
-        </b-field>
-        <b-field label="Telefonnummer/Faxnummer">
-          <b-input v-model="versammlungsLeitungValue.nummer" />
-        </b-field>
-      </b-step-item>
-      <b-step-item step="3" label="Zeitlicher Ablauf" clickable>
-        <b-field label="Tag der Veranstaltung">
-          <b-datepicker v-model="date"></b-datepicker>
-        </b-field>
-        <b-field label="Voraussichtlicher Start">
-          <b-timepicker
-            v-model="startzeit"
-            :increment-minutes="5"
-          ></b-timepicker>
+      </b-field>
+      <b-field label="Telefonnummer/Faxnummer">
+        <b-input v-model="versammlungsLeitungValue.nummer" />
+      </b-field>
+    </b-step-item>
+    <b-step-item step="3" label="Zeitlicher Ablauf" clickable>
+      <b-field label="Tag der Veranstaltung">
+        <b-datepicker v-model="date"></b-datepicker>
+      </b-field>
+      <b-field label="Voraussichtlicher Start">
+        <b-timepicker v-model="startzeit" :increment-minutes="5"></b-timepicker>
+      </b-field>
+      <b-field
+        label="Voraussichtlicher Start des Demozugs (wenn es keinen gibt, dann leer lassen)"
+      >
+        <b-timepicker
+          v-model="startzeitDemozug"
+          :increment-minutes="5"
+        ></b-timepicker>
+      </b-field>
+      <b-field label="Voraussichtliches Ende">
+        <b-timepicker v-model="endzeit" :increment-minutes="5"></b-timepicker>
+      </b-field>
+      <div class="box">
+        <b-field label="Startpunkt">
+          <b-input v-model="startpunkt" />
         </b-field>
         <b-field
-          label="Voraussichtlicher Start des Demozugs (wenn es keinen gibt, dann leer lassen)"
+          label="Routenverlauf (am besten alle Straßennamen nacheinander auflisten)"
         >
-          <b-timepicker
-            v-model="startzeitDemozug"
-            :increment-minutes="5"
-          ></b-timepicker>
+          <b-input v-model="route" type="textarea" />
         </b-field>
-        <b-field label="Voraussichtliches Ende">
-          <b-timepicker v-model="endzeit" :increment-minutes="5"></b-timepicker>
-        </b-field>
-        <div class="box">
-          <b-field label="Startpunkt">
-            <b-input v-model="startpunkt" />
-          </b-field>
-          <b-field
-            label="Routenverlauf (am besten alle Straßennamen nacheinander auflisten)"
-          >
-            <b-input v-model="route" type="textarea" />
-          </b-field>
-        </div>
-      </b-step-item>
-      <b-step-item step="4" label="Ablauf" clickable>
-        <b-field label="Art und Gegenstand der Versammlung">
-          <b-input v-model="versammlungsthema" />
-        </b-field>
-        <b-field label="Ablauf der Versammlung">
-          <b-input v-model="ablauf" type="textarea" />
-        </b-field>
-      </b-step-item>
-      <b-step-item step="5" label="Details" clickable>
-        <b-field label="Voraussichtliche Teilnehmer*innen">
-          <b-input
-            v-model="voraussichtlicheTeilnehmer"
-            type="number"
-            @input="onTeilnehmerInput"
-          />
-        </b-field>
-        <b-field>
-          <template slot="label">
-            <div style="display: flex">
-              <b-icon
-                icon="info-circle"
-                type="is-info"
-                custom-size="fa-lg"
-                title="Meist ca. 1 Person pro 30 Teilnehmenden"
-              />
-              <span class="has-text-weight-bold">Anzahl Ordner*innen:</span>
-            </div>
-          </template>
-          <b-input
-            v-model="anzahlOrdner"
-            type="number"
-            @input="onOrdnerInput"
-          />
-        </b-field>
-        <b-field
-          label="Vorgesehene Hilfsmittel (Lautsprecher, Transparente,
+      </div>
+    </b-step-item>
+    <b-step-item step="4" label="Ablauf" clickable>
+      <b-field label="Art und Gegenstand der Versammlung">
+        <b-input v-model="versammlungsthema" />
+      </b-field>
+      <b-field label="Ablauf der Versammlung">
+        <b-input v-model="ablauf" type="textarea" />
+      </b-field>
+    </b-step-item>
+    <b-step-item step="5" label="Details" clickable>
+      <b-field label="Voraussichtliche Teilnehmer*innen">
+        <b-input
+          v-model="voraussichtlicheTeilnehmer"
+          type="number"
+          @input="onTeilnehmerInput"
+        />
+      </b-field>
+      <b-field>
+        <template slot="label">
+          <div style="display: flex">
+            <b-icon
+              icon="info-circle"
+              type="is-info"
+              custom-size="fa-lg"
+              title="Meist ca. 1 Person pro 30 Teilnehmenden"
+            />
+            <span class="has-text-weight-bold">Anzahl Ordner*innen:</span>
+          </div>
+        </template>
+        <b-input v-model="anzahlOrdner" type="number" @input="onOrdnerInput" />
+      </b-field>
+      <b-field
+        label="Vorgesehene Hilfsmittel (Lautsprecher, Transparente,
           etc.)"
-        >
-          <b-input v-model="vorgeseheneHilfsmittel" type="textarea" />
-        </b-field>
-      </b-step-item>
-      <b-step-item step="6" label="Download" clickable>
-        <div class="content">
-          Hier kannst du deine Anmeldung als PDF herunterladen. Beachte, dass du
-          alle Felder ausfüllen musst, um eine vollständige Anmeldung zu
-          erhalten.
-        </div>
-        <div class="content">
-          <checklist-item
-            :state="stateOfStep1"
-            description="Veranstalter*in"
-          ></checklist-item>
-          <checklist-item
-            :state="stateOfStep2"
-            description="Versammlungsleitung"
-          ></checklist-item>
-          <checklist-item
-            :state="stateOfStep3"
-            description="Zeitlicher Ablauf"
-          ></checklist-item>
-          <checklist-item
-            :state="stateOfStep4"
-            description="Ablauf"
-          ></checklist-item>
-          <checklist-item
-            :state="stateOfStep5"
-            description="Details"
-          ></checklist-item>
-        </div>
-        <b-button :type="buttonStyle" @click="createPDF">Download</b-button>
-      </b-step-item>
-    </b-steps>
+      >
+        <b-taginput
+          v-model="vorgeseheneHilfsmittel"
+          :data="hilfsmittelGefiltert"
+          :open-on-focus="true"
+          :allow-new="true"
+          :autocomplete="true"
+          icon="tag"
+          placeholder="Füge Hilfsmittel hinzu"
+          @typing="filterHilfsmittel"
+        />
+      </b-field>
+    </b-step-item>
+    <b-step-item step="6" label="Download" clickable>
+      <div class="content">
+        Hier kannst du deine Anmeldung als PDF herunterladen. Beachte, dass du
+        alle Felder ausfüllen musst, um eine vollständige Anmeldung zu erhalten.
+      </div>
+      <div class="content">
+        <checklist-item
+          :state="stateOfStep1"
+          description="Veranstalter*in"
+        ></checklist-item>
+        <checklist-item
+          :state="stateOfStep2"
+          description="Versammlungsleitung"
+        ></checklist-item>
+        <checklist-item
+          :state="stateOfStep3"
+          description="Zeitlicher Ablauf"
+        ></checklist-item>
+        <checklist-item
+          :state="stateOfStep4"
+          description="Ablauf"
+        ></checklist-item>
+        <checklist-item
+          :state="stateOfStep5"
+          description="Details"
+        ></checklist-item>
+      </div>
+      <b-button :type="buttonStyle" @click="createPDF">Download</b-button>
+    </b-step-item>
+  </b-steps>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
 import moment from 'moment'
 import pdfMake from 'pdfmake/build/pdfmake'
+
+const hilfsmittel: string[] = ['Lautsprecher', 'Transparente']
 
 pdfMake.fonts = {
   jost: {
@@ -324,17 +327,19 @@ export default class DemoanmeldungsGenerator extends Vue {
 
   anzahlOrdner = ''
   voraussichtlicheTeilnehmer = ''
-  vorgeseheneHilfsmittel = ''
+  vorgeseheneHilfsmittel = []
+
+  hilfsmittelGefiltert = hilfsmittel
 
   get stateOfStep5() {
     const nothing =
       this.anzahlOrdner === '' &&
       this.voraussichtlicheTeilnehmer === '' &&
-      this.vorgeseheneHilfsmittel === ''
+      this.vorgeseheneHilfsmittel.length === 0
     const all =
       this.anzahlOrdner !== '' &&
       this.voraussichtlicheTeilnehmer !== '' &&
-      this.vorgeseheneHilfsmittel !== ''
+      this.vorgeseheneHilfsmittel.length !== 1
     return all ? '+' : nothing ? '-' : '0'
   }
 
@@ -435,7 +440,12 @@ Die benötigten Informationen für die Anmeldung der Demonstration und Kundgebun
                 this.voraussichtlicheTeilnehmer,
               ],
               ['Anzahl Ordner*innen', this.anzahlOrdner],
-              ['Vorgesehene Hilfsmittel', this.vorgeseheneHilfsmittel],
+              [
+                'Vorgesehene Hilfsmittel',
+                {
+                  ul: this.vorgeseheneHilfsmittel,
+                },
+              ],
             ]),
           },
         },
@@ -469,6 +479,12 @@ Mit freundlichen Grüßen,
     if (teilnehmer && !this.manuallySetOrdner) {
       this.anzahlOrdner = Math.ceil(teilnehmer / 30).toString()
     }
+  }
+
+  filterHilfsmittel(text: string) {
+    this.hilfsmittelGefiltert = hilfsmittel.filter((option) => {
+      return option.startsWith(text)
+    })
   }
 }
 </script>
