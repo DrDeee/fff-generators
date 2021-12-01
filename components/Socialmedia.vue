@@ -78,16 +78,29 @@
       <div v-else>
         <div class="box" v-html="template"></div>
         <b-field label="Kopieren für">
-          <div class="buttons">
-            <b-button expanded type="is-primary" @click="copyPlain()"
-              >Instagram</b-button
-            >
-            <b-button expanded type="is-primary" @click="copyWhatsApp()"
-              >WhatsApp</b-button
-            >
-            <b-button expanded type="is-primary" @click="copyMarkdown()"
-              >Matrix & Discord</b-button
-            >
+          <div class="columns">
+            <div class="buttons column">
+              <b-button expanded type="is-primary" @click="copyInstagram()"
+                >Instagram</b-button
+              >
+              <b-button expanded type="is-primary" @click="copyWhatsApp()"
+                >WhatsApp</b-button
+              >
+              <b-button expanded type="is-primary" @click="copyMarkdown()"
+                >Matrix</b-button
+              >
+            </div>
+            <div class="buttons column">
+              <b-button expanded type="is-primary" @click="copyMarkdown()"
+                >Discord</b-button
+              >
+              <b-button expanded type="is-primary" @click="copyHtml()"
+                >HTML</b-button
+              >
+              <b-button expanded type="is-primary" @click="copyText()"
+                >Sonstiges (Text ohne Formatierungen)</b-button
+              >
+            </div>
           </div>
         </b-field>
       </div>
@@ -106,7 +119,6 @@
 </style>
 
 <script lang="ts">
-
 // TODO formatting for Instagram
 //      SharePics?
 
@@ -125,8 +137,8 @@ const converterWA = new NodeHtmlMarkdown({
   strongDelimiter: '*',
 })
 const converterPlain = new NodeHtmlMarkdown({
-  strongDelimiter: '',
-  emDelimiter: '',
+  strongDelimiter: '³³³³³³³³³',
+  emDelimiter: '€€€€€€€€€',
 })
 
 @Component
@@ -218,10 +230,32 @@ export default class SocialmediaGenerator extends Vue {
     Snackbar.open('Nachricht kopiert.')
   }
 
-  copyPlain() {
+  copyInstagram() {
+    let s: string = ''
+    converterPlain
+      .translate(this.template)
+      .split('\n')
+      .forEach((line: string) => {
+        s += line.trim() === '' ? '.\n' : line.trim() + '\n'
+      })
+
+    window.navigator.clipboard.writeText(
+      s.replaceAll('€€€€€€€€€', '').replaceAll('³³³³³³³³³', '')
+    )
+    Snackbar.open('Nachricht kopiert.')
+  }
+
+  copyHtml() {
+    window.navigator.clipboard.writeText(this.template)
+    Snackbar.open('Nachricht kopiert.')
+  }
+
+  copyText() {
     window.navigator.clipboard.writeText(
       converterPlain
         .translate(this.template)
+        .replaceAll('€€€€€€€€€', '')
+        .replaceAll('³³³³³³³³³', '')
     )
     Snackbar.open('Nachricht kopiert.')
   }
