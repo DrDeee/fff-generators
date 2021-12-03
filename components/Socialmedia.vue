@@ -15,6 +15,15 @@
               <p class="card-header-title">Infos</p>
             </header>
             <div class="card-content">
+              <b-field
+                v-if="
+                  type === 'Erinnerung Globaler Klimastreik' ||
+                  type === 'Erinnerung Klimastreik'
+                "
+                label="Verbleibende Tage"
+              >
+                <b-numberinput v-model="days" :min="2" />
+              </b-field>
               <b-field label="Ortsgruppe">
                 <b-input v-model="og" />
               </b-field>
@@ -27,6 +36,9 @@
                   icon="clock"
                   :increment-minutes="5"
                 ></b-timepicker>
+              </b-field>
+              <b-field v-if="type === 'Plenum'" label="Kontaktlink">
+                <b-input v-model="link" />
               </b-field>
               <b-field v-if="type === 'Fahrraddemo'" label="Startpunkt">
                 <b-input v-model="start"></b-input
@@ -42,6 +54,9 @@
                 >
                 </b-datepicker>
               </b-field>
+              <b-field v-if="type === 'Globaler Streik'" label="Programm"
+                ><b-input v-model="program"></b-input
+              ></b-field>
             </div>
           </div>
         </div>
@@ -127,10 +142,7 @@ import moment from 'moment'
 import { NodeHtmlMarkdown } from 'node-html-markdown'
 import { SnackbarProgrammatic as Snackbar } from 'buefy'
 
-import templates, {
-  SMTemplateFlags,
-  SMTemplateTypes,
-} from '~/data/socialmedia/templates'
+import templates, { SMTemplateTypes } from '~/data/socialmedia/templates'
 
 const converter = new NodeHtmlMarkdown()
 const converterWA = new NodeHtmlMarkdown({
@@ -144,7 +156,14 @@ const converterPlain = new NodeHtmlMarkdown({
 @Component
 export default class SocialmediaGenerator extends Vue {
   type = SMTemplateTypes.Streik
-  types = [SMTemplateTypes.FahrradDemo, SMTemplateTypes.Streik]
+  types = [
+    SMTemplateTypes.FahrradDemo,
+    SMTemplateTypes.Streik,
+    SMTemplateTypes.GlobalerStreik,
+    SMTemplateTypes.ErinngerungStreik,
+    SMTemplateTypes.ErinnerungGlobalerStreik,
+    SMTemplateTypes.Plenum,
+  ]
 
   og = ''
   date: Date | null = null
@@ -154,6 +173,12 @@ export default class SocialmediaGenerator extends Vue {
 
   start = ''
   stop = 'null'
+
+  days = 2
+
+  link = ''
+
+  program = ''
 
   step = 0
   selectedTemplate = -1
@@ -171,41 +196,30 @@ export default class SocialmediaGenerator extends Vue {
       start: this.start,
       end: this.stop,
       month: this.month,
+      days: this.days,
+      program: this.program,
+      contactlink: this.link,
+      day: moment(this.date).format('DDDD'),
     }
   }
 
   get finishedTemplates() {
     return templates
       .filter((template) => {
-        let check =
-          this.start !== null &&
-          this.og !== '' &&
-          this.location !== '' &&
-          this.time !== null
-        template.flags.forEach((flag) => {
-          switch (flag) {
-            case SMTemplateFlags.Date: {
-              if (this.date == null) check = false
-              break
-            }
-            case SMTemplateFlags.Start: {
-              if (this.start === '') check = false
-              break
-            }
-            case SMTemplateFlags.End: {
-              if (this.stop === '') check = false
-              break
-            }
-          }
-        })
-        return template.types.includes(this.type) && check
+        return template.type === this.type
       })
+
       .map((template) => {
+        let msg = null
+        try {
+          msg = window.ejs.render(template.content, this.templateData)
+        } catch (e) {}
         return {
           id: templates.indexOf(template),
-          content: window.ejs.render(template.content, this.templateData),
+          content: msg,
         }
       })
+      .filter((data) => data.content != null)
   }
 
   get template() {
