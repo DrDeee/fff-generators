@@ -35,7 +35,8 @@
         "nuxt": "^2.14.4",
         "nuxt-buefy": "^0.3.31",
         "nuxt-fontawesome": "^0.4.0",
-        "pdfmake": "^0.1.68"
+        "pdfmake": "^0.1.68",
+        "ufo": "^0.7.9"
     },
     "devDependencies": {
         "@nuxt/types": "^2.14.4",
