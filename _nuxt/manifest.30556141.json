@@ -1,7 +1,6 @@
 {
   "name": "demo_anmeldungs_generator",
   "short_name": "demo_anmeldungs_generator",
-  "description": "## Build Setup",
   "icons": [
     {
       "src": "/fff-generators/_nuxt/icons/icon_64x64.5f6a36.png",
