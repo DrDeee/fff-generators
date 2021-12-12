@@ -1,14 +1,23 @@
 <template>
   <section>
-    <b-tabs animation="test" destroy-on-hide>
-      <b-tab-item class="tab-content" label="Social Media-Nachrichten">
+    <b-tabs destroy-on-hide>
+      <b-tab-item label="Willkommen">
+        <welcome />
+      </b-tab-item>
+      <b-tab-item label="Pressemitteilungen">
+        <pressemitteilung />
+      </b-tab-item>
+      <b-tab-item label="Social Media-Nachrichten">
         <socialmedia />
       </b-tab-item>
-      <b-tab-item class="tab-content" label="Versammlungsanzeige">
+      <b-tab-item label="Versammlungsanzeige">
         <veranstaltungsanzeige />
       </b-tab-item>
-      <b-tab-item class="tab-content" label="Pressemitteilungen">
-        Der Pressemitteilungs-Generator ist noch in Arbeit!
+      <b-tab-item label="Impressum">
+        <b-message type="is-info">
+          Das Impressum findest du
+          <a href="https://fridaysforfuture.de/impressum/">hier</a>.
+        </b-message>
       </b-tab-item>
     </b-tabs>
   </section>

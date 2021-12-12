@@ -18,7 +18,7 @@ export default {
         ],
         link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
         script: [
-            { src: 'https://github.com/mde/ejs/releases/download/v3.1.6/ejs.min.js', async: true, defer: true }
+            '~/assets/js/ejs.min.js'
         ]
     },
     /*

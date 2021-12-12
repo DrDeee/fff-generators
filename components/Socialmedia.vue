@@ -120,6 +120,9 @@
         </b-field>
       </div>
     </b-step-item>
+    <template #navigation>
+      <navigation />
+    </template>
   </b-steps>
 </template>
 
@@ -172,6 +175,7 @@ export default class SocialmediaGenerator extends Vue {
   time: Date | null = null
 
   start = ''
+  end = ''
   stop = 'null'
 
   days = 2
@@ -189,17 +193,17 @@ export default class SocialmediaGenerator extends Vue {
 
   get templateData() {
     return {
-      date: moment(this.date).format('D.MM.'),
+      date: this.date == null ? undefined : moment(this.date).format('D.MM.'),
       localgroup: this.og,
       location: this.location,
-      time: moment(this.time).format('H:mm'),
+      time: this.time == null ? undefined : moment(this.time).format('H:mm'),
       start: this.start,
       end: this.stop,
       month: this.month,
       days: this.days,
       program: this.program,
       contactlink: this.link,
-      day: moment(this.date).format('DDDD'),
+      day: this.date == null ? undefined : moment(this.days).format('DDDD'),
     }
   }
 

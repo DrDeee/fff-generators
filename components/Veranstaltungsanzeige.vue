@@ -1,5 +1,5 @@
 <template>
-  <b-steps>
+  <b-steps :has-navigation="false">
     <b-step-item step="1" label="Veranstalter*in" clickable>
       <b-field label="Vor- und Nachname">
         <b-input v-model="veranstalter.name" />
@@ -163,6 +163,9 @@
       </div>
       <b-button :type="buttonStyle" @click="createPDF">Download</b-button>
     </b-step-item>
+    <template #navigation>
+      <navigation />
+    </template>
   </b-steps>
 </template>
 
@@ -170,17 +173,13 @@
 import { Vue, Component } from 'vue-property-decorator'
 import moment from 'moment'
 import pdfMake from 'pdfmake/build/pdfmake'
+import { TDocumentDefinitions } from 'pdfmake/interfaces'
+
+// import fonts from '~/data/general/fonts'
 
 const hilfsmittel: string[] = ['Lautsprecher', 'Transparente']
 
-pdfMake.fonts = {
-  jost: {
-    normal: 'https://drdeee.github.io/fonts/Jost-400-Book.ttf',
-    bold: 'https://drdeee.github.io/fonts/Jost-500-Medium.ttf',
-    italics: 'https://drdeee.github.io/fonts/Jost-400-BookItalic.ttf',
-    bolditalics: 'https://drdeee.github.io/fonts/Jost-500-MediumItalic.ttf',
-  },
-}
+// pdfMake.fonts = fonts
 
 pdfMake.tableLayouts = {
   lightHorizontalLines: {
@@ -373,7 +372,7 @@ export default class DemoanmeldungsGenerator extends Vue {
       this.endzeit !== null ? moment(this.endzeit).format('HH:mm') + ' Uhr' : ''
 
     // yes this is shit, but TS hates me.
-    const docDefinition: any = {
+    const docDefinition: TDocumentDefinitions = {
       defaultStyle: {
         font: 'jost',
         fontSize: 12,
