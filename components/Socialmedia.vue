@@ -163,7 +163,7 @@ export default class SocialmediaGenerator extends Vue {
     SMTemplateTypes.FahrradDemo,
     SMTemplateTypes.Streik,
     SMTemplateTypes.GlobalerStreik,
-    SMTemplateTypes.ErinngerungStreik,
+    SMTemplateTypes.ErinnerungStreik,
     SMTemplateTypes.ErinnerungGlobalerStreik,
     SMTemplateTypes.Plenum,
   ]
@@ -192,19 +192,25 @@ export default class SocialmediaGenerator extends Vue {
   }
 
   get templateData() {
-    return {
+    const data: any = {
       date: this.date == null ? undefined : moment(this.date).format('D.MM.'),
-      localgroup: this.og,
-      location: this.location,
+      localgroup: this.og === '' ? undefined : this.og,
+      location: this.location === '' ? undefined : this.location,
       time: this.time == null ? undefined : moment(this.time).format('H:mm'),
-      start: this.start,
-      end: this.stop,
-      month: this.month,
+      start: this.start === '' ? undefined : this.start,
+      end: this.stop === '' ? undefined : this.stop,
+      month: this.month == null ? undefined : this.month,
       days: this.days,
-      program: this.program,
-      contactlink: this.link,
+      program: this.program === '' ? undefined : this.program,
+      contactlink: this.link === '' ? undefined : this.link,
       day: this.date == null ? undefined : moment(this.days).format('DDDD'),
     }
+    for(const key in data) {
+      if(data[key] === undefined || data[key] == null) {
+        delete data[key]
+      }
+    }
+    return data
   }
 
   get finishedTemplates() {
@@ -217,7 +223,11 @@ export default class SocialmediaGenerator extends Vue {
         let msg = null
         try {
           msg = window.ejs.render(template.content, this.templateData)
-        } catch (e) {}
+        } catch (e) {
+          return {
+            id: templates.indexOf(template),
+          }
+        }
         return {
           id: templates.indexOf(template),
           content: msg,

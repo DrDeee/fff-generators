@@ -1,5 +1,5 @@
 <template>
-  <b-steps :has-navigation="false">
+  <b-steps :has-navigation="false" destroy-on-hide>
     <b-step-item step="1" label="Veranstalter*in" clickable>
       <b-field label="Vor- und Nachname">
         <b-input v-model="veranstalter.name" />
@@ -135,33 +135,41 @@
       </b-field>
     </b-step-item>
     <b-step-item step="6" label="Download" clickable>
-      <div class="content">
-        Hier kannst du deine Anmeldung als PDF herunterladen. Beachte, dass du
-        alle Felder ausfüllen musst, um eine vollständige Anmeldung zu erhalten.
+      <div class="columns">
+        <div class="column">
+          <div class="content">
+            Hier kannst du deine Anmeldung als PDF herunterladen. Beachte, dass
+            du alle Felder ausfüllen musst, um eine vollständige Anmeldung zu
+            erhalten.
+          </div>
+          <div class="content">
+            <checklist-item
+              :state="stateOfStep1"
+              description="Veranstalter*in"
+            ></checklist-item>
+            <checklist-item
+              :state="stateOfStep2"
+              description="Versammlungsleitung"
+            ></checklist-item>
+            <checklist-item
+              :state="stateOfStep3"
+              description="Zeitlicher Ablauf"
+            ></checklist-item>
+            <checklist-item
+              :state="stateOfStep4"
+              description="Ablauf"
+            ></checklist-item>
+            <checklist-item
+              :state="stateOfStep5"
+              description="Details"
+            ></checklist-item>
+          </div>
+          <b-button :type="buttonStyle" @click="createPDF">Download</b-button>
+        </div>
+        <div class="column">
+          <pdf-viewer :refresh="refresh" :data-url="dataUrl" />
+        </div>
       </div>
-      <div class="content">
-        <checklist-item
-          :state="stateOfStep1"
-          description="Veranstalter*in"
-        ></checklist-item>
-        <checklist-item
-          :state="stateOfStep2"
-          description="Versammlungsleitung"
-        ></checklist-item>
-        <checklist-item
-          :state="stateOfStep3"
-          description="Zeitlicher Ablauf"
-        ></checklist-item>
-        <checklist-item
-          :state="stateOfStep4"
-          description="Ablauf"
-        ></checklist-item>
-        <checklist-item
-          :state="stateOfStep5"
-          description="Details"
-        ></checklist-item>
-      </div>
-      <b-button :type="buttonStyle" @click="createPDF">Download</b-button>
     </b-step-item>
     <template #navigation>
       <navigation />
@@ -175,11 +183,11 @@ import moment from 'moment'
 import pdfMake from 'pdfmake/build/pdfmake'
 import { TDocumentDefinitions } from 'pdfmake/interfaces'
 
-// import fonts from '~/data/general/fonts'
+import fonts from '~/data/general/fonts'
 
 const hilfsmittel: string[] = ['Lautsprecher', 'Transparente']
 
-// pdfMake.fonts = fonts
+pdfMake.fonts = fonts
 
 pdfMake.tableLayouts = {
   lightHorizontalLines: {
@@ -236,6 +244,14 @@ function applyTabelStyles(table: any) {
 }
 @Component
 export default class DemoanmeldungsGenerator extends Vue {
+  dataUrl: string = ''
+
+  refresh() {
+    pdfMake.createPdf(this.docDefinitions).getDataUrl((url) => {
+      this.dataUrl = url
+    })
+  }
+
   selected = true
   date: Date[] = [new Date()]
 
@@ -358,7 +374,7 @@ export default class DemoanmeldungsGenerator extends Vue {
     return this.isFull ? 'is-success' : 'is-warning'
   }
 
-  createPDF() {
+  get docDefinitions(): TDocumentDefinitions {
     const demonstrationDate = moment(this.date[0]).format('DD.MM.yyyy')
     const startzeitString =
       this.startzeit !== null
@@ -372,7 +388,7 @@ export default class DemoanmeldungsGenerator extends Vue {
       this.endzeit !== null ? moment(this.endzeit).format('HH:mm') + ' Uhr' : ''
 
     // yes this is shit, but TS hates me.
-    const docDefinition: TDocumentDefinitions = {
+    return {
       defaultStyle: {
         font: 'jost',
         fontSize: 12,
@@ -464,7 +480,10 @@ Mit freundlichen Grüßen,
         },
       ],
     }
-    pdfMake.createPdf(docDefinition).download('demo_anmeldung.pdf')
+  }
+
+  createPDF() {
+    pdfMake.createPdf(this.docDefinitions).download('demo_anmeldung.pdf')
   }
 
   manuallySetOrdner = false

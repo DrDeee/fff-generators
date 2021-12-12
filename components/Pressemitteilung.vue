@@ -1,32 +1,94 @@
 <template>
-  <b-steps>
-    <b-step-item step="1" label="Allgemeine Infos" clickable> </b-step-item>
-    <b-step-item step="2" label="Aktion" clickable>Hi </b-step-item>
-    <b-step-item step="3" label="Zitate" clickable>Hi </b-step-item>
-    <template #navigation>
-      <navigation />
-    </template>
-  </b-steps>
+  <div class="columns">
+    <div class="column">
+      <b-steps destroy-on-hide>
+        <b-step-item step="1" label="Allgemeine Infos" clickable>
+          <b-field label="Ortsgruppe">
+            <b-input v-model="localGroup"></b-input>
+          </b-field>
+          <b-field label="Datum & Uhrzeit">
+            <b-datetimepicker v-model="date"></b-datetimepicker
+          ></b-field>
+        </b-step-item>
+        <b-step-item step="2" label="Aktion" clickable> </b-step-item>
+        <b-step-item step="3" label="Zitate" clickable>Hi </b-step-item>
+        <template #navigation>
+          <navigation />
+        </template>
+      </b-steps>
+    </div>
+    <div class="column">
+      <pdf-viewer :refresh="updateDataUrl" :data-url="dataUrl" />
+      <b-field class="tools" grouped>
+        <div class="control">
+          <b-button
+            expanded
+            type="is-primary"
+            icon-left="download"
+            @click="download()"
+            >Download</b-button
+          >
+        </div>
+        <div class="control">
+          <b-button
+            expanded
+            icon-left="sync"
+            type="is-primary"
+            @click="updateDataUrl()"
+            >Update</b-button
+          >
+        </div>
+      </b-field>
+    </div>
+  </div>
 </template>
+<style scoped>
+.tools {
+  justify-content: center;
+}
+</style>
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
+import moment from 'moment'
 import pdfMake from 'pdfmake/build/pdfmake'
-import pdfFonts from 'pdfmake/build/vfs_fonts'
 import { TDocumentDefinitions } from 'pdfmake/interfaces'
-// import fonts from '~/data/general/fonts'
 
-// pdfMake.fonts = fonts
+import fonts from '~/data/general/fonts'
+import logo from '~/data/general/logo'
 
-pdfMake.vfs = pdfFonts.pdfMake.vfs
+pdfMake.fonts = fonts
+
+const days = [
+  'Sonntag',
+  'Montag',
+  'Dienstag',
+  'Mittwoch',
+  'Donnerstag',
+  'Freitag',
+  'Samstag',
+]
 
 @Component
 export default class PressemittelungsGenerator extends Vue {
-  generate() {
-    const docDefinition: TDocumentDefinitions = {
+  localGroup: string = ''
+  date: Date = new Date()
+  currentDate = new Date()
+  dataUrl = ''
+
+  updateDataUrl() {
+    pdfMake.createPdf(this.docDefinition).getDataUrl((url) => {
+      this.dataUrl = url
+    })
+  }
+
+  get docDefinition(): TDocumentDefinitions {
+    return {
       defaultStyle: {
-        // font: 'jost',
+        font: 'jost',
         fontSize: 11,
+        lineHeight: 0.8
       },
+      pageMargins: [70, 50],
       footer: [
         {
           text: 'Pressemitteilung',
@@ -34,29 +96,40 @@ export default class PressemittelungsGenerator extends Vue {
           alignment: 'center',
         },
         {
-          text: 'Fridays for Future Pirna           ',
+          text: 'Fridays for Future ' + this.localGroup,
           fontSize: 10,
           alignment: 'center',
         },
       ],
       content: [
         {
-          text: 'Pressemitteilung',
-          bold: true,
-          fontSize: 17,
-          margin: [0, 33, 0, 0],
-        },
-        {
-          text: 'Fridays for Future Pirna',
-          bold: true,
+          columns: [
+            [
+              {
+                text: 'Pressemitteilung',
+                bold: true,
+                fontSize: 17,
+                margin: [0, 27, 0, 0],
+              },
+              {
+                text: 'Fridays for Future ' + this.localGroup,
+                bold: true,
+              },
+            ],
+            [{ image: logo, width: 100, height: 100, alignment: 'right' }],
+          ],
         },
         {
           text:
-            'Dienstag, 21. September 2021\n\n „Wir streiken, bis ihr handelt“ – Klimastreik in Pirna\nSchüler:innen streiken in Pirna fürs Klima',
+            days[this.currentDate.getDay()] +
+            moment(this.currentDate).format(', DD. MMMM YYYY') +
+            '\n\n „Wir streiken, bis ihr handelt“ – Klimastreik in Pirna\nSchüler:innen streiken in ' +
+            this.localGroup +
+            ' fürs Klima',
           noWrap: false,
           linkToPage: 2,
           bold: true,
-          margin: [0, 60, 0, 0],
+          margin: [0, 35, 0, 0],
         },
         {
           text: 'Test',
@@ -64,7 +137,10 @@ export default class PressemittelungsGenerator extends Vue {
         },
       ],
     }
-    pdfMake.createPdf(docDefinition).open()
+  }
+
+  download() {
+    pdfMake.createPdf(this.docDefinition).download('Pressemittelung.pdf')
   }
 }
 </script>
