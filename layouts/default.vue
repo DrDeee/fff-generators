@@ -12,7 +12,7 @@
           <b-navbar-item @click="$router.push('/versammlungsanzeigen')">
             Versammlungsanzeigen
           </b-navbar-item>
-          <b-navbar-item
+          <!-- <b-navbar-item
             tag="span"
             @click="/*$router.push('/pressemitteilungen')*/"
           >
@@ -26,7 +26,7 @@
             >
               Pressemitteilungen</b-tooltip
             >
-          </b-navbar-item>
+          </b-navbar-item> -->
           <b-navbar-item @click="$router.push('/socialmedia')">
             Social Media-Nachrichten
           </b-navbar-item>
