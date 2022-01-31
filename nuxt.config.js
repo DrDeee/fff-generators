@@ -1,20 +1,12 @@
 export default {
-  /*
-   ** Nuxt rendering mode
-   ** See https://nuxtjs.org/api/configuration-mode
-   */
-  mode: 'universal',
-  /*
-   ** Nuxt target
-   ** See https://nuxtjs.org/api/configuration-target
-   */
   target: 'static',
+  ssr: false,
   /*
    ** Headers of the page
    ** See https://nuxtjs.org/api/configuration-head
    */
   head: {
-    title: process.env.npm_package_name || '',
+    title: 'FFF-Generatoren',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -25,6 +17,13 @@ export default {
       },
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+    script: [
+      {
+        src: 'https://github.com/mde/ejs/releases/download/v3.1.6/ejs.min.js',
+        async: true,
+        defer: true,
+      },
+    ],
   },
   /*
    ** Plugins to load before mounting the App
@@ -76,6 +75,13 @@ export default {
         set: '@fortawesome/free-solid-svg-icons',
         icons: ['fas'],
       },
+      {
+        set: '@fortawesome/free-brands-svg-icons',
+        icons: ['fab'],
+      },
     ],
+  },
+  router: {
+    base: process.env.BASE_ROUTE || '/',
   },
 }

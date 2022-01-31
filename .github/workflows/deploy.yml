@@ -1,0 +1,38 @@
+name: Deploy to GitHub Pages
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    name: Deployment
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Cache node modules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+      - name: Build with NPM
+        run: |
+          npm install
+          npm run generate
+        env:
+          BASE_ROUTE: '/fff-generators/'
+          TARGET: static
+          SSR: FALSE
+      - name: Publish to Github Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
