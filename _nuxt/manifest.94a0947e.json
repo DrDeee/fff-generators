@@ -1,9 +1,0 @@
-{
-  "name": "demo_anmeldungs_generator",
-  "short_name": "demo_anmeldungs_generator",
-  "icons": [],
-  "start_url": "/fff-generators/?standalone=true",
-  "display": "standalone",
-  "background_color": "#ffffff",
-  "lang": "en"
-}
