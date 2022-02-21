@@ -1,9 +1,12 @@
 const fonts: {} = {
   jost: {
-    normal: 'http://deee4future.me//fonts/Jost-400-Book.ttf',
-    bold: 'http://deee4future.me//fonts/Jost-500-Medium.ttf',
-    italics: 'http://deee4future.me//fonts/Jost-400-BookItalic.ttf',
-    bolditalics: 'http://deee4future.me//fonts/Jost-500-MediumItalic.ttf',
+    normal:
+      'https://cdn.jsdelivr.net/gh/indestructible-type/Jost@35f141c970538f1ed0f235789c19156b3ce2a762/fonts/ttf/Jost-400-Book.ttf',
+    bold: 'https://cdn.jsdelivr.net/gh/indestructible-type/Jost@35f141c970538f1ed0f235789c19156b3ce2a762/fonts/ttf/Jost-500-Medium.ttf',
+    italics:
+      'https://cdn.jsdelivr.net/gh/indestructible-type/Jost@35f141c970538f1ed0f235789c19156b3ce2a762/fonts/ttf/Jost-400-BookItalic.ttf',
+    bolditalics:
+      'https://cdn.jsdelivr.net/gh/indestructible-type/Jost@35f141c970538f1ed0f235789c19156b3ce2a762/fonts/ttf/Jost-500-MediumItalic.ttf',
   },
 }
 

@@ -23,7 +23,7 @@ Wir streiken für den #NeustartKlima!<br><br>
 <%= localgroup %>, <%= time %> <%= location %><br>
 Laut für's Klima! 📢<br>
 ➡bringt alles mit, dass Lärm macht!🔊<br><br>
-<b>Wir freuen uns euch morgen zu sehen!</b>👀👌🌍`,
+<b>Wir freuen uns auf euch!</b>👀👌🌍`,
         type: SMTemplateTypes.ErinnerungStreik,
     }
 ]
