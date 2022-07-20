@@ -1,5 +1,4 @@
-export default {
-  target: 'static',
+export default {  target: 'static',
   ssr: false,
   /*
    ** Headers of the page
@@ -50,7 +49,6 @@ export default {
     // Doc: https://buefy.github.io/#/documentation
     'nuxt-buefy',
     'nuxt-fontawesome',
-    // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     '@nuxtjs/pwa',
   ],

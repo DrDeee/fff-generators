@@ -1,5 +1,4 @@
-<template>
-  <div>
+<template>  <div>
     <div
       class="is-size-4 has-text-centered is-uppercase has-text-weight-bold pb-3"
     >
@@ -45,10 +44,7 @@
         <nuxt-link to="/versammlungsanzeigen" class="card-footer-item"
           >Versammlungsanzeigen</nuxt-link
         >
-        <nuxt-link
-          to="/pressemitteilungen"
-          class="card-footer-item has-background-white-ter disabled"
-          event=""
+        <nuxt-link to="/pressemitteilungen" class="card-footer-item"
           >Pressemitteilungen</nuxt-link
         >
         <nuxt-link to="/socialmedia" class="card-footer-item"

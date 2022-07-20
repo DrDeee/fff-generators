@@ -13,8 +13,28 @@
               <b-input v-model="localGroup"></b-input>
             </b-field>
             <b-field label="Datum & Uhrzeit">
-              <b-datetimepicker v-model="date"></b-datetimepicker
-            ></b-field>
+              <b-datetimepicker v-model="date"></b-datetimepicker>
+            </b-field>
+            <b-field label="Farb-Schema">
+              <div class="is-flex">
+                <div
+                  v-for="theme in themes"
+                  :key="themes.indexOf(theme)"
+                  :style="{
+                    backgroundColor: theme.bgColor,
+                    width: '45px',
+                    height: '45px',
+                    borderRadius: '5px',
+                    marginRight: '5px',
+                    cursor: 'pointer',
+                    border:
+                      '4px solid ' +
+                      (currentTheme == theme ? '#7957d5' : theme.bgColor),
+                  }"
+                  @click="setTheme(theme)"
+                ></div>
+              </div>
+            </b-field>
           </b-step-item>
           <b-step-item step="2" label="Aktion" clickable> </b-step-item>
           <template #navigation>
@@ -34,15 +54,6 @@
               >Download</b-button
             >
           </div>
-          <div class="control">
-            <b-button
-              expanded
-              icon-left="sync"
-              type="is-primary"
-              @click="updateDataUrl()"
-              >Update</b-button
-            >
-          </div>
         </b-field>
       </div>
     </div>
@@ -54,24 +65,27 @@
 }
 </style>
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
+import { Vue, Component, Watch } from 'vue-property-decorator'
 import moment from 'moment'
 import pdfMake from 'pdfmake/build/pdfmake'
 import { TDocumentDefinitions } from 'pdfmake/interfaces'
 
+import { fetchLogo, themes, ColorTheme } from '../data/logo'
 import fonts from '~/data/general/fonts'
 import weekdays from '~/data/general/weekdays'
 import logo from '~/data/general/logo'
 
 pdfMake.fonts = fonts
 
-
 @Component
 export default class PressemittelungsGenerator extends Vue {
   localGroup: string = ''
   date: Date = new Date()
   currentDate = new Date()
+  currentTheme: ColorTheme = themes.darkGreen
   dataUrl = ''
+
+  logo: any = logo
 
   updateDataUrl() {
     pdfMake.createPdf(this.docDefinition).getDataUrl((url) => {
@@ -79,7 +93,37 @@ export default class PressemittelungsGenerator extends Vue {
     })
   }
 
+  get themes() {
+    return Object.values(themes)
+  }
+
+  timer: any = null
+
+  mounted() {
+    this.timer = setInterval(() => {
+      this.updateDataUrl()
+    }, 10000)
+    this.$buefy.dialog.alert({
+      title: 'Anleitung',
+      message:
+        'Okay, hier eine kurze Einleitung zu dem Generator<br><br/>Im ersten Schritt kannst du allgemeine Informationen über die Aktion, die du ankündigen möchtest angeben. Diese gehören zu fast allen PM dazu.<br><br/>' +
+        'Im nächsten Schritt kannst du dir deine Pressemitteilung zusammenbauen. Dabei sind deine bereits eingegebenen Daten bereits in den Bausteinen eingesetzt. Die Bausteine kannst du dann nach Belieben anpassen und umordnen.<br><br/>' +
+        'Im letzten Schritt kannst du deine Pressemitteilung herunterladen. Dieser Vorgang dauert <del>einige Minuten</del> keine 3 Sekunden :)',
+      confirmText: 'Alles klar!',
+    })
+    this.loadLogo()
+  }
+
+  beforeUnmount() {
+    clearInterval(this.timer)
+  }
+
+  async loadLogo() {
+    this.logo = await fetchLogo(this.localGroup, this.currentTheme)
+  }
+
   get docDefinition(): TDocumentDefinitions {
+    moment.locale('de')
     return {
       defaultStyle: {
         font: 'jost',
@@ -114,7 +158,7 @@ export default class PressemittelungsGenerator extends Vue {
                 bold: true,
               },
             ],
-            [{ image: logo, width: 100, height: 100, alignment: 'right' }],
+            [{ image: this.logo, width: 100, height: 100, alignment: 'right' }],
           ],
         },
         {
@@ -135,6 +179,24 @@ export default class PressemittelungsGenerator extends Vue {
         },
       ],
     }
+  }
+
+  logoTimer: any = null
+  reloadLogo() {
+    clearInterval(this.logoTimer)
+    this.logoTimer = setTimeout(() => {
+      this.loadLogo()
+    }, 2000)
+  }
+
+  setTheme(theme: ColorTheme) {
+    this.currentTheme = theme
+    this.reloadLogo()
+  }
+
+  @Watch('localGroup')
+  onLocalGroupChanged() {
+    this.reloadLogo()
   }
 
   download() {

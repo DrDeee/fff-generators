@@ -1,5 +1,4 @@
-<template>
-  <div>
+<template>  <div>
     <div class="container column">
       <b-navbar class="mb-3" shadow>
         <template #brand>
@@ -12,21 +11,9 @@
           <b-navbar-item @click="$router.push('/versammlungsanzeigen')">
             Versammlungsanzeigen
           </b-navbar-item>
-          <!-- <b-navbar-item
-            tag="span"
-            @click="/*$router.push('/pressemitteilungen')*/"
-          >
-            <b-tooltip
-              position="is-bottom"
-              class="cursor"
-              multilined
-              type="is-danger"
-              :delay="400"
-              label="Pressemitteilungen sind noch in Entwicklung :("
-            >
-              Pressemitteilungen</b-tooltip
-            >
-          </b-navbar-item> -->
+          <b-navbar-item @click="$router.push('/pressemitteilungen')">
+            Pressemitteilungen
+          </b-navbar-item>
           <b-navbar-item @click="$router.push('/socialmedia')">
             Social Media-Nachrichten
           </b-navbar-item>
