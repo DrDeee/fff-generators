@@ -4,9 +4,11 @@
       <b-tab-item label="Willkommen">
         <welcome />
       </b-tab-item>
+      <!--
       <b-tab-item label="Pressemitteilungen">
         <pressemitteilung />
       </b-tab-item>
+      -->
       <b-tab-item label="Social Media-Nachrichten">
         <socialmedia />
       </b-tab-item>
